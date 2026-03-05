@@ -1,0 +1,56 @@
+{
+  "expo": {
+    "name": "tot5sBlog",
+    "slug": "tot5sblog",
+    "version": "1.0.0",
+    "sdkVersion": "54.0.0",
+    "orientation": "portrait",
+    "owner": "tot5s",
+    "userInterfaceStyle": "dark",
+    "scheme": "tot5sblog",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.tot5s.blog",
+      "newArchEnabled": false,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "블로그 게시물에 사진/영상을 추가하기 위해 사진 라이브러리 접근이 필요합니다.",
+        "NSCameraUsageDescription": "블로그 게시물에 사진/영상을 촬영하기 위해 카메라 접근이 필요합니다.",
+        "NSMicrophoneUsageDescription": "동영상 녹화를 위해 마이크 접근이 필요합니다."
+      }
+    },
+    "android": {
+      "newArchEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.tot5s.blog"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "블로그 게시물에 사진을 추가하기 위해 사진 라이브러리에 접근합니다.",
+          "cameraPermission": "블로그 게시물 사진 촬영을 위해 카메라에 접근합니다.",
+          "microphonePermission": "동영상 녹화를 위해 마이크에 접근합니다."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8ed63a16-9469-4c81-9430-8f08c3a43fe7"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/8ed63a16-9469-4c81-9430-8f08c3a43fe7"
+    }
+  }
+}
