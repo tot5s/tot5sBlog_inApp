@@ -17,7 +17,7 @@ export interface BlogPost {
   category: string;
   media: MediaItem[];
   tags: string[];
-  coverImage?: string;
+  coverImage: string | null;  // undefined → null로 변경
   createdAt: string;
   updatedAt: string;
 }

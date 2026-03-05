@@ -105,33 +105,47 @@ export default function PostForm({ existingPost }: Props) {
 
   const removeTag = (t: string) => setTags(prev => prev.filter(x => x !== t));
 
-  /* ── save ── */
   const handleSave = async () => {
-    if (!title.trim()) { Alert.alert('제목을 입력해주세요'); return; }
-    if (!content.trim()) { Alert.alert('내용을 입력해주세요'); return; }
+  if (!title.trim()) { Alert.alert('제목을 입력해주세요'); return; }
+  if (!content.trim()) { Alert.alert('내용을 입력해주세요'); return; }
 
-    setSaving(true);
-    try {
-      const now = new Date().toISOString();
-      const post: BlogPost = {
-        id: existingPost?.id ?? (uuid.v4() as string),
-        title: title.trim(),
-        content: content.trim(),
-        category,
-        tags,
-        media,
-        coverImage: existingPost?.coverImage,
-        createdAt: existingPost?.createdAt ?? now,
-        updatedAt: now,
-      };
-      await Storage.save(post);
-      router.back();
-    } catch (e) {
-      Alert.alert('저장 실패', '다시 시도해주세요.');
-    } finally {
-      setSaving(false);
-    }
-  };
+  setSaving(true);
+  try {
+    const now = new Date().toISOString();
+
+    // 새로 추가된 미디어(로컬 uri)만 Firebase Storage에 업로드
+    const uploadedMedia = await Promise.all(
+      media.map(async (m) => {
+        if (m.uri.startsWith('https://')) return m;
+        const downloadUrl = await Storage.uploadMedia(m);
+        return { ...m, uri: downloadUrl };
+      })
+    );
+
+    // coverImage: undefined 방지 → null 또는 첫 번째 이미지 URL
+    const coverImage = uploadedMedia.find(m => m.type === 'image')?.uri ?? null;
+
+    const post: BlogPost = {
+      id: existingPost?.id ?? (uuid.v4() as string),
+      title: title.trim(),
+      content: content.trim(),
+      category,
+      tags,
+      media: uploadedMedia,
+      coverImage,  // null이면 Firestore에 null로 저장 (undefined 아님)
+      createdAt: existingPost?.createdAt ?? now,
+      updatedAt: now,
+    };
+
+    await Storage.save(post);
+    router.back();
+  } catch (e) {
+    Alert.alert('저장 실패', '다시 시도해주세요.');
+    console.error(e);
+  } finally {
+    setSaving(false);
+  }
+};
 
   const cats = CATEGORIES.filter(c => c.id !== 'all');
 
