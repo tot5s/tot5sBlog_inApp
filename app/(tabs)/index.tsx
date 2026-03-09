@@ -6,9 +6,9 @@ import {
 import { useFocusEffect, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { BlogPost } from '../types';
-import { Storage } from '../utils/storage';
-import { Colors, CATEGORIES, getCategoryMeta, formatDate, readTime } from '../constants/theme';
+import { BlogPost } from '../../types';
+import { Storage } from '../../utils/storage';
+import { Colors, CATEGORIES, getCategoryMeta, formatDate, readTime } from '../../constants/theme';
 
 export default function HomeScreen() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
